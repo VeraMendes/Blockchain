@@ -122,17 +122,18 @@ def mine():
     # request json data
     data = request.get_json()
 
-    required_params = ['proof', 'id']
-    if not all (p in data for p in required_params):
-        response = {'message': "Missing required parameter/s"}
+    required_values = ['proof', 'id']
+    if not all (v in data for v in required_values):
+        response = {'message': "Missing required values"}
         return jsonify(response), 400
 
+    # encode and hash
     last_block_string = json.dumps(blockchain.last_block, sort_keys=True)
 
     if blockchain.valid_proof(last_block_string,data['proof']):
-        # Forge the new Block by adding it to the chain with the proof
+        # Forge the new Block by adding it to the chain with the proof (salt)
         previous_hash = blockchain.hash(blockchain.last_block)
-        block = blockchain.new_block(proof, previous_hash)
+        block = blockchain.new_block(data['proof'], previous_hash)
 
         response = {
             'message': "New Block Forged",

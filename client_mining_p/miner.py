@@ -1,5 +1,6 @@
 import hashlib
 import requests
+from datetime import datetime
 
 import sys
 import json
@@ -17,7 +18,7 @@ def proof_of_work(block):
     proof = 0
     while not valid_proof(block_string, proof):
         proof += 1
-        return proof
+    return proof
 
 
 def valid_proof(block_string, proof):
@@ -49,7 +50,6 @@ if __name__ == '__main__':
     print("ID is", id)
     f.close()
 
-    print('the adventure begins...')
 
     # mined coins variable
     coins_mined = 0
@@ -67,9 +67,14 @@ if __name__ == '__main__':
             break
 
         # TODO: Get the block from `data` and use it to look for a new proof
-        # print('the adventure begins...')
-        new_proof = proof_of_work(data)
-        # print('work finished')
+        print('the adventure begins...')
+        start_time = datetime.now()
+        block = data['last_block']
+        new_proof = proof_of_work(block)
+        end_time = datetime.now()
+        print(f"You have mined {coins_mined} coins")
+        print(f"It took you {end_time - start_time} to finish this mining cycle!")
+        print('work finished!!!')
 
         # When found, POST it to the server {"proof": new_proof, "id": id}
         post_data = {"proof": new_proof, "id": id}
@@ -83,9 +88,9 @@ if __name__ == '__main__':
             # add 1 to the number of coins mined and print it. 
             coins_mined += 1
             print(f'Coins mined: {coins_mined}')  
-        # Otherwise, print the message from the server.
+            # Otherwise, print the message from the server.
         else:
             print(data['message'])
 
-    print('work finished')
+    # print('work finished')
         
