@@ -90,7 +90,8 @@ if __name__ == '__main__':
             print(f'Coins mined: {coins_mined}')  
             # Otherwise, print the message from the server.
         else:
-            print(data['message'])
+            print(data['message'])    
 
-    # print('work finished')
-        
+# example for new transaction via curl: 
+# curl -X POST -H "Content-Type: application/json" -d '{"sender":"vera-mendes", "recipient": "Brian", "amount": 1}' localhost:5000/transactions/new
+# same available via postman or insomnia
